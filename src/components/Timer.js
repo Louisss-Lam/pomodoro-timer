@@ -60,7 +60,7 @@ const Timer = () => {
     const totalSeconds = mode === 'work' 
         ? settingsInfo.workMinutes * 60 
         : settingsInfo.breakMinutes * 60;
-    const percentage = Math.round(secondsLeft / totalSeconds) * 100;
+    const percentage = Math.round(secondsLeft / totalSeconds * 100);
 
     const minutes = Math.floor(secondsLeft / 60);
     let seconds = secondsLeft % 60;
@@ -73,12 +73,15 @@ const Timer = () => {
             text={minutes + ':' + seconds} 
             styles={buildStyles({
                 textColor:'#fff',
-                pathColor: red,
+                pathColor: mode === 'work' ? red : green,
                 tailColor:'rgba(255, 255, 255, .2)',
             })}
         />
         <div style={{marginTop: '20px'}}>
-            {isPaused ? <PlayButton /> : <PasueButton />}
+            {isPaused 
+                ? <PlayButton onClick={() => { setIsPaused(false); isPausedRef.current = false; }} /> 
+                : <PasueButton onClick={() => { setIsPaused(true); isPausedRef.current = true; }} />
+            }
         </div>
         <div style={{marginTop: '20px'}}>
             <SettingsButton onClick={() => {settingsInfo.setShowSettings(true)}} />
